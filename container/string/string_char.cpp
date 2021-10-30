@@ -3,6 +3,19 @@
 #include <typeinfo>
 
 using namespace std;
+// string和str互转
+void test() {
+    // string to cstr
+    string str = "itcast";
+    const char* cstr = str.c_str();
+
+    cout << "type of str " << typeid(str).name() << endl;
+    cout << "type of cstr " << typeid(cstr).name() << endl;
+
+    // cstr to string
+    char* s = "itcast";
+    string sstr = s;
+}
 
 // []和at方法比较
 void test01() {
@@ -80,16 +93,5 @@ void test07() {
     cout << s << endl;
 }
 int main() {
-    // string to cstr
-//    string str = "itcast";
-//    const char* cstr = str.c_str();
-//
-//    cout << "type of str " << typeid(str).name() << endl;
-//    cout << "type of cstr " << typeid(cstr).name() << endl;
-//
-//    // cstr to string
-//    char* s = "itcast";
-//    string sstr = s;
-
     test07();
 }
