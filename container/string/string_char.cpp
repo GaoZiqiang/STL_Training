@@ -2,7 +2,13 @@
 #include <iostream>
 #include <typeinfo>
 
-using namespace std;
+//把std这个namespacec全部打开
+//using namespace std;
+// 只打开需要的
+using std::cout;
+using std::endl;
+using std::string;
+
 // string和str互转
 void test() {
     // string to cstr
