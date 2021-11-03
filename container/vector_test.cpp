@@ -28,12 +28,20 @@ void test01() {
 class Person {
 public:
     Person(int _id, int _age) : id(_id), age(_age) {}
-    static void show(Person& per) {cout << per.id << " " << per.age << endl;}
+    // 使用并声明友元函数
+    friend void show(Person& per);
 
 private:
     int id;
     int age;
 };
+
+// 定义友元函数
+void show(Person& per)
+{
+    cout << per.id << " " << per.age << endl;
+}
+
 // 自定义数据类型
 void test02() {
     // 创建容器
@@ -49,7 +57,8 @@ void test02() {
 //        it->show();
 //    }
 
-    for_each(vec.begin(), vec.end(), Person::show);
+    // 调用友元函数show()
+    for_each(vec.begin(), vec.end(), show);
 }
 
 int main() {
