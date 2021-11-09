@@ -23,7 +23,7 @@ string getATargetString() {
 
     cout << "target (0 ~ " << RAND_MAX << "):";
     cin >> target;
-    snprintf(buf, 10, "%d", target);
+    snprintf(buf, 10, "%ld", target);
 
     return string(buf);
 }
@@ -108,6 +108,14 @@ void testVector(long& value) {
     cout << "vector.data() = " << vec.data() << endl;
     cout << "vector.capacity() = " << vec.capacity() << endl;// capacity():当前程序已经分配给该vector对象的内存大小（单位为元素个数）
 
+    // vector遍历
+    cout << "vector遍历" << endl;
+    vector<string>::iterator vec_it = vec.begin();
+    cout << "sizeof(vec_it): " << sizeof(vec_it) << endl;
+    cout << "typeid(vec_it).name(): " << typeid(vec_it).name() << endl;
+    for (auto it = vec.begin(); it != vec.end(); ++it)
+        cout << *it << endl;
+
     string target = getATargetString();
     {
         time_start = clock();
@@ -166,6 +174,17 @@ void testList(long& value) {
     cout << "list.max_size() = " << list.max_size() << endl;
     cout << "list.front() = " << list.front() << endl;
     cout << "list.back() = " << list.back() << endl;
+    cout << "测试list的iterator" << endl;
+    cout << "type of iterator" << typeid(list.begin()).name() << endl;
+    cout << "size of iterator" << sizeof(list.begin()) << endl;
+    cout << "data of iterator1 " << list.begin()->data() << endl;
+    cout << "data of iterator2 " << *(list.begin()) << endl;
+//    cout << list.begin()->data()
+
+    // 遍历list
+    cout << "遍历list" << endl;
+    for (auto it = list.begin(); it != list.end(); ++it)
+        cout << it->data() << " " << *it << endl;
 
     string target = getATargetString();
     time_start = clock();
@@ -227,6 +246,47 @@ void testForwardList(long& value) {
     flist.clear();
 
 }
+
+#include <set>
+#include <functional>
+// 测试红黑树
+void testRbTree() {
+    cout << "test Rb_tree......" << endl;
+
+    _Rb_tree<int, int, _Identity<int>, less<int>> itree;
+    cout << "sizeof(itree): " << sizeof(itree) << endl;
+    cout << "itree.empty(): " << itree.empty() << endl;
+    cout << "itree.size(): " << itree.size() << endl;
+
+    // 插入元素
+    // insert_unique()测试--元素不可重复
+    itree._M_insert_unique(3);
+    itree._M_insert_unique(8);
+    itree._M_insert_unique(5);
+    itree._M_insert_unique(9);
+    itree._M_insert_unique(13);
+    itree._M_insert_unique(5);// 插入重复元素5--不会报错,也不会插入
+    cout << "itree.empty(): " << itree.empty() << endl;
+    cout << "itree.size(): " << itree.size() << endl;
+    cout << "itree.count(5): " << itree.count(5) << endl;// 统计元素5的个数
+
+    // insert_equal()测试--元素可重复
+    itree._M_insert_equal(5);
+    itree._M_insert_equal(5);
+    cout << "itree.size(): " << itree.size() << endl;
+    cout << "itree.count(5): " << itree.count(5) << endl;
+}
+
+// 测试各种容器类对象的大小
+void testComponentSize() {
+    cout << "test components size..." << endl;
+
+    cout << "sizeof(list<int>): " << sizeof(list<int>) << endl;
+    cout << "sizeof(list<int>::iterator): " << sizeof(list<int>::iterator) << endl;
+    cout << "sizeof(vector<int>): " << sizeof(vector<int>) << endl;
+    cout << "sizeof(vector<int>::iterator): " << sizeof(vector<int>::iterator) << endl;
+}
+
 int main() {
     int choice;
     long value;
@@ -234,12 +294,15 @@ int main() {
     cout << "select: ";
     cin >> choice;
 
-    if (choice != 1) {
+    if (choice != 1 && choice != 0) {
         cout << "how many elements: ";
         cin >> value;
     }
 
     switch (choice) {
+        case 0:
+            testComponentSize();
+            break;
         case 1:
             testArray();
             break;
@@ -251,6 +314,9 @@ int main() {
             break;
         case 4:
             testForwardList(value);
+            break;
+        case 5:
+            testRbTree();
             break;
     }
 }
