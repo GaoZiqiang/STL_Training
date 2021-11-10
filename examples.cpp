@@ -109,12 +109,12 @@ void testVector(long& value) {
     cout << "vector.capacity() = " << vec.capacity() << endl;// capacity():当前程序已经分配给该vector对象的内存大小（单位为元素个数）
 
     // vector遍历
-    cout << "vector遍历" << endl;
-    vector<string>::iterator vec_it = vec.begin();
-    cout << "sizeof(vec_it): " << sizeof(vec_it) << endl;
-    cout << "typeid(vec_it).name(): " << typeid(vec_it).name() << endl;
-    for (auto it = vec.begin(); it != vec.end(); ++it)
-        cout << *it << endl;
+//    cout << "vector遍历" << endl;
+//    vector<string>::iterator vec_it = vec.begin();
+//    cout << "sizeof(vec_it): " << sizeof(vec_it) << endl;
+//    cout << "typeid(vec_it).name(): " << typeid(vec_it).name() << endl;
+//    for (auto it = vec.begin(); it != vec.end(); ++it)
+//        cout << *it << endl;
 
     string target = getATargetString();
     {
@@ -247,6 +247,59 @@ void testForwardList(long& value) {
 
 }
 
+// 测试test
+#include <set>
+void testSet(long& value) {
+    cout << "test set()......" << endl;
+
+    set<string> my_set;
+    char buf[10];
+
+    clock_t time_start = clock();
+    cout << "输入元素:" << endl;
+    for (long i = 0; i < value; ++i) {
+        long tmp = rand();// 输入元素为无序
+        snprintf(buf, 10, "%ld", tmp);
+        cout << tmp << endl;
+        try {
+            my_set.insert(string(buf));// c_str-->string 因为需要排序，所以set的插要慢一些
+        } catch(exception& p) {
+            cout << "i = " << i << p.what() << endl;
+            abort();// 异常退出
+        }
+    }
+
+    cout << "milli-seconds: " << (clock() - time_start) << endl;
+    cout << "set.size() = " << my_set.size() << endl;
+    cout << "set.max_size() = " << my_set.max_size() << endl;
+
+    // 遍历--输出变有序
+    cout << "set遍历输出" << endl;
+    for (auto it = my_set.begin(); it != my_set.end(); ++it)
+        cout << *it << endl;
+
+    string target = getATargetString();
+    {
+        time_start = clock();
+        set<string>::iterator p_item = find(my_set.begin(), my_set.end(), target);// C标准库函数
+        cout << "std::find(), milli-seconds: " << (clock() - time_start) << endl;
+        if (p_item != my_set.end())
+            cout << "found, " << *p_item << endl;
+        else
+            cout << "not found" << endl;
+    }
+
+    {
+        time_start = clock();
+        auto p_item = my_set.find(target);// STL set自带方法
+        cout << "my_set.find(), milli-seconds: " << (clock() - time_start) << endl;
+        if (p_item != my_set.end())
+            cout << "found, " << *p_item << endl;
+        else
+            cout << "not found" << endl;
+    }
+}
+
 #include <set>
 #include <functional>
 // 测试红黑树
@@ -257,6 +310,7 @@ void testRbTree() {
     cout << "sizeof(itree): " << sizeof(itree) << endl;
     cout << "itree.empty(): " << itree.empty() << endl;
     cout << "itree.size(): " << itree.size() << endl;
+
 
     // 插入元素
     // insert_unique()测试--元素不可重复
@@ -317,6 +371,9 @@ int main() {
             break;
         case 5:
             testRbTree();
+            break;
+        case 6:
+            testSet(value);
             break;
     }
 }
