@@ -300,6 +300,86 @@ void testSet(long& value) {
     }
 }
 
+#include <map>
+void testMap(long& value)
+{
+    cout << "\ntest_map().......... \n";
+
+    map<long, string> c;
+    char buf[10];
+
+    clock_t timeStart = clock();
+    cout << "输入数据: " << endl;
+    for(long i=0; i< value; ++i)
+    {
+        long tmp = rand();
+        cout << tmp << endl;
+        snprintf(buf, 10, "%ld", tmp);
+        try {
+            c[i] = string(buf);// 可以使用[]进行赋值
+        }
+        catch(exception& p) {
+            cout << "i=" << i << " " << p.what() << endl;
+            abort();
+        }
+    }
+    cout << "milli-seconds : " << (clock()-timeStart) << endl;
+    cout << "map.size()= " << c.size() << endl;
+    cout << "map.max_size()= " << c.max_size() << endl;		//178956970
+
+    // map遍历--没有针对data做排序
+    cout << "map遍历" << endl;
+    for (auto it = c.begin(); it != c.end(); ++it)
+        cout << it->first << " " << it->second << endl;
+//        cout << (*it).first << " " << (*it).second << endl;
+
+//    long target = get_a_target_long();
+//    timeStart = clock();
+//    auto pItem = c.find(target);
+//    cout << "c.find(), milli-seconds : " << (clock()-timeStart) << endl;
+//    if (pItem != c.end())
+//        cout << "found, value=" << (*pItem).second << endl;
+//    else
+//        cout << "not found! " << endl;
+
+    c.clear();
+}
+
+#include <unordered_map>
+void testUnorderedMap(long& value) {
+    cout << "test unordered_map" << endl;
+
+    unordered_map<long, string> umap;
+    char buf[10];
+
+    clock_t time_start = clock();
+    for (long i = 0; i < value; i++) {
+        snprintf(buf, 10, "%d", rand());
+        try {
+            umap.insert({i,string(buf)});
+//            umap[i] = string(buf);
+        } catch(exception& p) {
+            cout << "i = " << i << p.what() << endl;
+            abort();
+        }
+    }
+
+    cout << "milli-seconds: " << (clock() - time_start) << endl;
+    cout << "unordered_map.size() = " << umap.size() << endl;
+    cout << "unordered_map.max_size() = " << umap.max_size() << endl;
+    cout << "unordered_map.bucket_count() = " << umap.bucket_count() << endl;
+    cout << "unordered_map.max_bucket_count() = " << umap.max_bucket_count() << endl;
+
+    for (unsigned i = 0; i < umap.bucket_count(); ++i)
+        cout << "bucket #" << i << " has " << umap.bucket_size(i) << " elements" << endl;
+    
+    // unordered_map遍历
+    cout << "遍历unordered_map" << endl;
+    for (auto it = umap.begin(); it != umap.end(); ++it)
+        cout << it->first << " " << it->second << endl;
+
+}
+
 #include <set>
 #include <functional>
 // 测试红黑树
@@ -374,6 +454,12 @@ int main() {
             break;
         case 6:
             testSet(value);
+            break;
+        case 7:
+            testMap(value);
+            break;
+        case 8:
+            testUnorderedMap(value);
             break;
     }
 }
