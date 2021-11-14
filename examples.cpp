@@ -370,13 +370,26 @@ void testUnorderedMap(long& value) {
     cout << "unordered_map.bucket_count() = " << umap.bucket_count() << endl;
     cout << "unordered_map.max_bucket_count() = " << umap.max_bucket_count() << endl;
 
-    for (unsigned i = 0; i < umap.bucket_count(); ++i)
-        cout << "bucket #" << i << " has " << umap.bucket_size(i) << " elements" << endl;
+    // 遍历每个bucket挂载链表上元素
+    for (unsigned i = 0; i < umap.bucket_count(); ++i) {
+         cout << "bucket #" << i << " has " << umap.bucket_size(i) << " elements" << endl;
+        if (umap.bucket_size(i) > 0) {
+            // cout << "bucket #" << i << "'s first element: " << umap.begin(i)->second <<endl;
+            // auto it = umap.begin(i);
+            int j = 0;
+            // 遍历链表
+            for (auto it = umap.begin(i); it != umap.end(i); ++it)
+                cout << "bucket #" << i << "'s " << (j + 1) << "-th element: " << it->second << endl;
+        }
+    }
+
     
     // unordered_map遍历
-    cout << "遍历unordered_map" << endl;
-    for (auto it = umap.begin(); it != umap.end(); ++it)
-        cout << it->first << " " << it->second << endl;
+//    cout << "遍历unordered_map" << endl;
+//    for (auto it = umap.begin(); it != umap.end(); ++it)
+//        cout << it->first << " " << it->second << endl;
+
+    umap.clear();
 
 }
 
@@ -410,6 +423,15 @@ void testRbTree() {
     cout << "itree.size(): " << itree.size() << endl;
     cout << "itree.count(5): " << itree.count(5) << endl;
 }
+
+
+// 测试hashtable
+
+void testHashtable() {
+
+}
+
+
 
 // 测试各种容器类对象的大小
 void testComponentSize() {
